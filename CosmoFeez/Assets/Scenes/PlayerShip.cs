@@ -32,11 +32,14 @@ public class PlayerShip : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         _rigPlayer.maxAngularVelocity = 0.9f;
     }
-    void FixedUpdate()
-    {
-        ShipRot();
-        Move();
 
+    void Update()
+    {
+        ShipRotMove();
+    }
+
+    void ShipRotMove()
+    {
         if (Input.GetKey(KeyCode.R))
         {
             _up = 1f;
@@ -63,9 +66,10 @@ public class PlayerShip : MonoBehaviour
         }
 
         _right = Input.GetAxis("Horizontal");
+
         if (Input.GetKey(KeyCode.W))
         {
-            speed = speed + 0.02f; 
+            speed = speed + 0.02f;
         }
         else if (Input.GetKey(KeyCode.S))
         {
@@ -75,20 +79,20 @@ public class PlayerShip : MonoBehaviour
         {
             speed = 0f;
         }
-        else if(!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        else if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             speed = speed - 0f;
         }
 
-        if(speed >= maxSpeed)
+        if (speed >= maxSpeed)
         {
             speed = maxSpeed;
         }
-        else if(speed <= minSpeed)
+        else if (speed <= minSpeed)
         {
             speed = minSpeed;
         }
-        if(Input.GetKey(KeyCode.Tab) && TimeTurbo)
+        if (Input.GetKey(KeyCode.Tab) && TimeTurbo)
         {
             StartCoroutine(TurboSpeed());
         }
@@ -96,10 +100,8 @@ public class PlayerShip : MonoBehaviour
         {
             ShipMusic.PlayOneShot(ErroreTurbo);
         }
-    }
-    void ShipRot()
-    {
-        if(xRot >= 7)
+
+        if (xRot >= 7)
         {
             xRot = 7;
         }
@@ -127,10 +129,6 @@ public class PlayerShip : MonoBehaviour
         yRot += Input.GetAxis("Mouse Y");
 
         _rigPlayer.AddRelativeTorque(-yRot, -zRot, -xRot);
-    }
-
-    void Move()
-    {
         _rigPlayer.AddRelativeForce(_right, _up, speed);
     }
 
