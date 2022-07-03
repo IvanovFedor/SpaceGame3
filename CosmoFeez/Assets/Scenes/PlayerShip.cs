@@ -31,15 +31,39 @@ public class PlayerShip : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         _rigPlayer.maxAngularVelocity = 0.9f;
+        _right = Input.GetAxis("Horizontal");
     }
 
     void Update()
     {
         ShipRotMove();
     }
-
-    void ShipRotMove()
+    private void FixedUpdate()
     {
+        if (xRot >= 7)
+        {
+            xRot = 7;
+        }
+        else if (xRot <= -7)
+        {
+            xRot = -7;
+        }
+        else if (xRot <= 1.5 && xRot >= -1.5)
+        {
+            xRot = 0;
+        }
+        if (yRot >= 7)
+        {
+            yRot = 7;
+        }
+        else if (yRot <= -7)
+        {
+            yRot = -7;
+        }
+        else if (yRot <= 1.5 && yRot >= -1.5)
+        {
+            yRot = 0;
+        }
         if (Input.GetKey(KeyCode.R))
         {
             _up = 1f;
@@ -65,7 +89,7 @@ public class PlayerShip : MonoBehaviour
             zRot = 0f;
         }
 
-        _right = Input.GetAxis("Horizontal");
+
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -100,38 +124,19 @@ public class PlayerShip : MonoBehaviour
         {
             ShipMusic.PlayOneShot(ErroreTurbo);
         }
+    }
+    void ShipRotMove()
+    {
+        
 
-        if (xRot >= 7)
-        {
-            xRot = 7;
-        }
-        else if(xRot <= -7)
-        {
-            xRot = -7;
-        }
-        else if (xRot <= 1.5 && xRot >= -1.5)
-        {
-            xRot = 0;
-        }
-        if (yRot >= 7)
-        {
-            yRot = 7;
-        }
-        else if (yRot <= -7)
-        {
-            yRot = -7;
-        }
-        else if (yRot <= 1.5 && yRot >= -1.5)
-        {
-            yRot = 0;
-        }
+        
         xRot += Input.GetAxis("Mouse X");
         yRot += Input.GetAxis("Mouse Y");
 
         _rigPlayer.AddRelativeTorque(-yRot, -zRot, -xRot);
         _rigPlayer.AddRelativeForce(_right, _up, speed);
     }
-
+   
     IEnumerator TurboSpeed()
     {
         ShipMusic.PlayOneShot(ActivateTurbo);
